@@ -5,7 +5,7 @@ import { team } from "../components/interface";
 
 //useTMI
 
-export const useTmi = () => {
+export const useTmi = (user: string[]) => {
     const [users, setUsers] = useState<{
         name: string;
         team: string;
@@ -13,8 +13,9 @@ export const useTmi = () => {
     const [teams, setTeams] = useState<team[]>(JSON.parse(localStorage.getItem("teams") || "[]"));
 
     useEffect(() => {
+        if (user.length === 0) return;
         const client = new tmi.Client({
-            channels: ["rubius"],
+            channels: user,
         });
         client.connect();
         client.on("connected", () => {

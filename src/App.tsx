@@ -5,11 +5,13 @@ import { useTmi } from './hook/useTmi';
 
 
 function App() {
+  const [temp, setTemp] = useState("");
+  const [user, setUser] = useState("");
 
-  const { teams, createTeam, deleteTeam } = useTmi();
+  const { teams, createTeam, deleteTeam } = useTmi(user.split(","));
 
   const [file, setFile] = useState<any>(null)
-  const [newName, setNewTeam] = useState("")
+  const [newTeam, setNewTeam] = useState("")
   const [deleteName, setDeleteTeam] = useState("")
   const [scale, setScale] = useState<number>(0)
   const total = teams.reduce((total, team) => total + team.score, 0);
@@ -49,19 +51,35 @@ function App() {
         />
         <div>
           <input type="text"
-            value={newName}
+            value={temp}
+            onChange={(e) => {
+              setTemp(e.target.value)
+            }
+            }
+          />
+          <button onClick={() => {
+            if (temp === "") return
+            //mayuscula
+            setUser(temp);
+            window.alert("User set");
+          }}>Set Twitch User</button>
+        </div>
+        <div>
+          <input type="text"
+            value={newTeam}
             onChange={(e) => {
               setNewTeam(e.target.value)
             }
             }
           />
           <button onClick={() => {
-            if (newName === "") return
+            if (newTeam === "") return
             //mayuscula
-            createTeam(newName.toLocaleLowerCase());
+            createTeam(newTeam.toLocaleLowerCase());
             setNewTeam("")
           }}>Create Team</button>
         </div>
+
         <div>
           <input type="text"
             value={deleteName}
