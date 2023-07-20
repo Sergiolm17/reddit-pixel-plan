@@ -78,6 +78,9 @@ export const useTmi = (user: string[]) => {
                             });
 
                         }
+                    } else {
+                        console.log(channel);
+
                     }
                 }
 
