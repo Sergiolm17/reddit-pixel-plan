@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Draggable from 'react-draggable'; // The default
-import { team } from "./interface";
+import { team, user } from "./interface";
 
-export function Events({ team, scale, total }: { team: team, scale: number, total: number }) {
+export function Events({ team, scale, total, users }: { team: team, scale: number, total: number, users: user[] }) {
     //usa el local storage para guardar la posicion de los equipos y obtener
     const [, setState] = useState({
         activeDrags: 0,
         deltaPosition: JSON.parse(localStorage.getItem(team.name) || '{"x":90,"y":90}'),
     })
+    const [score, setScore] = useState(0);
+
+    useEffect(() => {
+        //cuenta cuantos usuarios hay con el nombre del team
+        const count = users.filter((user) => user.team === team.name).length;
+        setScore(count)
+
+    }, [users])
+
 
     const handleDrag = (e: any, ui: any) => {
         setState(prevState => ({
@@ -28,7 +37,8 @@ export function Events({ team, scale, total }: { team: team, scale: number, tota
 
     const dragHandlers = { onDrag: handleDrag };
     const totall = total === 0 ? 1 : total;
-    const width = 100 + scale * 10 * team.score / totall;
+    const width = 100 + scale * 10 * score / totall;
+
 
     return (
         <Draggable bounds="body" defaultPosition={JSON.parse(localStorage.getItem(team.name) || '{"x":90,"y":90}')}
@@ -47,7 +57,7 @@ export function Events({ team, scale, total }: { team: team, scale: number, tota
                     {team.name}
                 </p>
                 <p>
-                    {team.score}
+                    {score}
                 </p>
             </div>
         </Draggable>

@@ -5,16 +5,17 @@ import { useTmi } from './hook/useTmi';
 
 
 function App() {
-  const [temp, setTemp] = useState("");
-  const [user, setUser] = useState("");
+  const [temp, setTemp] = useState(localStorage.getItem("user") || "");
+  const [user, setUser] = useState(localStorage.getItem("user") || "");
 
-  const { teams, createTeam, deleteTeam } = useTmi(user.split(","));
+  const { users, teams, createTeam, deleteTeam } = useTmi(user);
 
-  const [file, setFile] = useState<any>(null)
+  const [file, setFile] = useState<any>(null);
   const [newTeam, setNewTeam] = useState("")
-  const [deleteName, setDeleteTeam] = useState("")
-  const [scale, setScale] = useState<number>(0)
-  const total = teams.reduce((total, team) => total + team.score, 0);
+  const [deleteName, setDeleteTeam] = useState("");
+  const [scale, setScale] = useState<number>(0);
+
+  const total = users.length
 
 
   return (
@@ -27,7 +28,7 @@ function App() {
 
     }}>
       {teams.map((team, index) =>
-        <Events key={index} team={team} scale={scale} total={total} />
+        <Events key={index} team={team} scale={scale} total={total} users={users} />
       )}
       <div style={
         {
@@ -61,6 +62,8 @@ function App() {
             if (temp === "") return
             //mayuscula
             setUser(temp);
+            //salve to local storage
+            localStorage.setItem("user", temp);
             window.alert("User set");
           }}>Set Twitch User</button>
         </div>
@@ -75,7 +78,7 @@ function App() {
           <button onClick={() => {
             if (newTeam === "") return
             //mayuscula
-            createTeam(newTeam.toLocaleLowerCase());
+            createTeam(newTeam);
             setNewTeam("")
           }}>Create Team</button>
         </div>
@@ -90,7 +93,7 @@ function App() {
           />
           <button onClick={() => {
             if (deleteName === "") return;
-            deleteTeam(deleteName.toLocaleLowerCase());
+            deleteTeam(deleteName);
             setDeleteTeam("");
           }}>Delete Team</button>
         </div>

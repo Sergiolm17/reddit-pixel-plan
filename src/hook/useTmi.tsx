@@ -1,121 +1,84 @@
 import { useEffect, useState } from "react";
 import tmi from "tmi.js";
-import { team } from "../components/interface";
+import { team, user } from "../components/interface";
 
 
 //useTMI
 
-export const useTmi = (user: string[]) => {
-    const [users, setUsers] = useState<{
-        name: string;
-        team: string;
-    }[]>([]);
+export const useTmi = (channel: string) => {
+
     const [teams, setTeams] = useState<team[]>(JSON.parse(localStorage.getItem("teams") || "[]"));
+    const [users, setUsers] = useState<user[]>(JSON.parse(localStorage.getItem("users") || "[]"));
+
+    const onMessageHandler = (channel: any, tags: any, message: string) => {
+
+        // const user = users.findIndex((user) => user.name === tags["display-name"]);
+        const teamIndex = teams.findIndex((team) => team.name === message);
+
+
+        //si hay el team
+        if (teamIndex !== -1) {
+            console.log("teamIndex", teamIndex, "message", message, teams);
+
+            //busca si el usuario esta en el team
+            // const userIndex = users.findIndex((user) => user.name === tags["display-name"]);
+
+            setUsers((users) => {
+                const userIndex = users.findIndex((user) => user.name === tags["display-name"]);
+                if (userIndex === -1)
+                    return [...users, { name: tags["display-name"], team: message }];
+                else
+                    return users.map((user, index) => {
+                        if (index === userIndex)
+                            user.team = message;
+                        return user;
+                    });
+            });
+        }
+
+
+    }
+    useEffect(() => {
+        localStorage.setItem("users", JSON.stringify(users));
+
+
+    }, [users])
+
 
     useEffect(() => {
-        if (user.length === 0) return;
-        console.log("user", user);
+
+        if (channel === "") return;
 
         const client = new tmi.Client({
-            channels: user,
+            channels: channel.split(","),
             logger: {
-                info: (msg: string) => console.log(msg),
+                info: (msg: string) => { return },
                 warn: (msg: string) => console.warn(msg),
                 error: (msg: string) => console.error(msg),
             }
         });
         client.connect();
         client.on("connected", () => {
-            client.on("message", async (channel: any, tags: any, msg: string) => {
-
-                //solo  la primera palabra
-                const message = msg.toLowerCase().split(" ")[0];
-
-
-                const user = users.find((user) => user.name === tags["display-name"]);
-                const teamIndex = teams.findIndex((team) => team.name === message);
-                console.log(message, teamIndex);
-
-
-                if (!user) {
-                    if (teamIndex !== -1) {
-                        console.log("teamIndex", teamIndex);
-
-                        setUsers(users => [...users, {
-                            name: tags["display-name"],
-                            team: message,
-                        }]);
-
-                        setTeams(teams => {
-                            const newTeams = [...teams];
-                            newTeams[teamIndex].score++;
-                            return newTeams;
-                        });
-                    }
-                } else {
-
-                    if (teamIndex !== -1) {
-                        if (user.team !== message) {
-                            const currentUserTeamIndex = teams.findIndex(
-                                (team) => team.name === user.team
-                            );
-                            if (currentUserTeamIndex !== -1) {
-                                //teams[currentUserTeamIndex].score--;
-                                setTeams(teams => {
-                                    const newTeams = [...teams];
-                                    newTeams[currentUserTeamIndex].score--;
-                                    return newTeams;
-                                });
-                            }
-
-                            //teams[teamIndex].score++;
-                            setTeams(teams => {
-                                const newTeams = [...teams];
-                                newTeams[teamIndex].score++;
-                                return newTeams;
-                            });
-                            //actualiza el team del usuario
-                            setUsers(users => {
-                                const newUsers = [...users];
-                                const currentUserIndex = newUsers.findIndex(
-                                    (user) => user.name === tags["display-name"]
-                                );
-                                newUsers[currentUserIndex].team = message;
-                                return newUsers;
-                            });
-
-                        }
-                    } else {
-                        console.log(channel);
-
-                    }
-                }
-
-            });
+            console.log("connected");
+            client.on("message", onMessageHandler);
         });
         return () => {
-            client.disconnect();
+            client.disconnect().then(() => console.log("disconnected"));
         }
-    }, []);
+    }, [teams, channel]);
+
+
     const createTeam = (name: string) => {
-        //verifica si el equipo existe
         const teamIndex = teams.findIndex((team) => team.name === name);
-        //si ya existe no hace nada
         if (teamIndex !== -1)
             return;
-
-        setTeams(teams => [...teams, {
-            name,
-            score: 0,
-        }]);
+        setTeams(teams => [...teams, { name, score: 0 }]);
         localStorage.setItem("teams", JSON.stringify(teams));
     }
     useEffect(() => {
         localStorage.setItem("teams", JSON.stringify(teams));
     }, [teams]);
-    useEffect(() => {
-        localStorage.setItem("users", JSON.stringify(users));
-    }, [users]);
+
 
 
     const deleteTeam = (name: string) => {
@@ -130,5 +93,5 @@ export const useTmi = (user: string[]) => {
 
     }
 
-    return { teams, users, createTeam, deleteTeam };
+    return { users, teams, createTeam, deleteTeam };
 }

@@ -1,4 +1,7 @@
 export interface team {
   name: string,
-  score: number,
+}
+export interface user {
+  name: string,
+  team: string,
 }
