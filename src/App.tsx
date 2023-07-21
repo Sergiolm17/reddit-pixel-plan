@@ -60,7 +60,10 @@ function App() {
             }
           }}
         />
-        <Field type={"text"} state={temp} setState={setTemp} callback={(u) => localStorage.setItem("user", temp)} />
+        <Field type={"text"} state={temp} setState={setTemp} callback={(data) => {
+          setUser(data);
+          localStorage.setItem("user", temp);
+        }} />
         <ConnectionState isConnected={connected} />
 
         <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} />
