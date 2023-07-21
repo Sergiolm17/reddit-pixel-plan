@@ -1,5 +1,5 @@
 
-export function Field({ type = "text", state, setState, callback }: { type: string, state: string, setState: (state: string) => void, callback: (state: string) => void }) {
+export function Field({ type = "text", state, setState, callback, text }: { type: string, state: string, setState: (state: string) => void, callback: (state: string) => void, text: string }) {
     return (
         <div>
             <input
@@ -16,7 +16,7 @@ export function Field({ type = "text", state, setState, callback }: { type: stri
                     setState("");
                 }}
             >
-                Delete Team
+                {text}
             </button>
         </div>
     )

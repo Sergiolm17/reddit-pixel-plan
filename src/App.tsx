@@ -64,11 +64,11 @@ function App() {
         <Field type={"text"} state={temp} setState={setTemp} callback={(data) => {
           setUser(data);
           localStorage.setItem("user", temp);
-        }} />
+        }} text={"Set User"} />
         <ConnectionState isConnected={connected} />
 
-        <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} />
-        <Field type={"text"} state={deleteName} setState={setDeleteTeam} callback={deleteTeam} />
+        <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} text={"Create Team"} />
+        <Field type={"text"} state={deleteName} setState={setDeleteTeam} callback={deleteTeam} text={"Delete Team"} />
 
 
         <div>
