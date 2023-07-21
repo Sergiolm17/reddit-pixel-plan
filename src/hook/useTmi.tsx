@@ -14,8 +14,15 @@ export const useTmi = (user: string[]) => {
 
     useEffect(() => {
         if (user.length === 0) return;
+        console.log("user", user);
+
         const client = new tmi.Client({
             channels: user,
+            logger: {
+                info: (msg: string) => console.log(msg),
+                warn: (msg: string) => console.warn(msg),
+                error: (msg: string) => console.error(msg),
+            }
         });
         client.connect();
         client.on("connected", () => {
