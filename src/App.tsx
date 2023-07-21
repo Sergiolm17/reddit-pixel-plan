@@ -107,14 +107,17 @@ function App() {
           opacity: 0.5,
         }}
       >
-        <p>Guia:</p>
+        <p>Guia Stream:</p>
         <ul>
-          <li>Crear un usuario</li>
-          <li>Crear un equipo</li>
-          <li>Para que se puedan unir tienen que escribir el nombre del equipo</li>
+          <li>Coloca tu nick de twitch, se conectará a tu chat</li>
+          <li>Crear los equipos</li>
           <li>Carga tu imagen</li>
           <li>Organiza los equipos</li>
-
+        </ul>
+        <p>Guia Chat:</p>
+        <ul>
+          <li>Para que se puedan unir tienen que escribe el nombre del equipo</li>
+          <li>Coloca tu pixel en en tu equipo</li>
         </ul>
 
       </div>
