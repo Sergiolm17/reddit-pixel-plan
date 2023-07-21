@@ -29,6 +29,7 @@ function App() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        opacity: 0.8,
       }}
     >
       <Analytics />
@@ -48,6 +49,18 @@ function App() {
           top: "7px",
         }}
       >
+
+        <Field type={"text"} state={temp} setState={setTemp} callback={(data) => {
+          setUser(data);
+          localStorage.setItem("user", temp);
+        }} text={"Set User"} />
+        <ConnectionState isConnected={connected} />
+
+        <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} text={"Create Team"} />
+        <Field type={"text"} state={deleteName} setState={setDeleteTeam} callback={deleteTeam} text={"Delete Team"} />
+
+
+
         <input
           type="file"
           id="file"
@@ -63,16 +76,6 @@ function App() {
             }
           }}
         />
-        <Field type={"text"} state={temp} setState={setTemp} callback={(data) => {
-          setUser(data);
-          localStorage.setItem("user", temp);
-        }} text={"Set User"} />
-        <ConnectionState isConnected={connected} />
-
-        <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} text={"Create Team"} />
-        <Field type={"text"} state={deleteName} setState={setDeleteTeam} callback={deleteTeam} text={"Delete Team"} />
-
-
         <div>
           Scale{" "}
           <input
@@ -86,7 +89,31 @@ function App() {
           />
         </div>
       </div>
+
       <Twitter />
+      <div
+        style={{
+          position: "fixed",
+          bottom: "7px",
+          left: "7px",
+          backgroundColor: "white",
+          color: "black",
+          padding: "7px",
+          borderRadius: "7px",
+          opacity: 0.5,
+        }}
+      >
+        <p>Guia:</p>
+        <ul>
+          <li>Crear un usuario</li>
+          <li>Crear un equipo</li>
+          <li>Para que se puedan unir tienen que escribir el nombre del equipo</li>
+          <li>Carga tu imagen</li>
+          <li>Organiza los equipos</li>
+
+        </ul>
+
+      </div>
     </div>
   );
 
