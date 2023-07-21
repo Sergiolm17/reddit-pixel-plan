@@ -47,6 +47,10 @@ function App() {
         style={{
           position: "fixed",
           top: "7px",
+          left: "7px",
+          backgroundColor: "white",
+          color: "black",
+          padding: "7px",
         }}
       >
 
