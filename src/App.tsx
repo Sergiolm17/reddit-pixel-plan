@@ -123,6 +123,21 @@ function App() {
         </ol>
 
       </div>
+      <div style={{
+        position: "fixed",
+        top: "7px",
+        right: "7px",
+        backgroundColor: "white",
+        color: "black",
+        padding: "7px",
+        borderRadius: "7px",
+        width: "150px",
+        opacity: 0.5,
+        zIndex: 9999999,
+        fontSize: "0.5rem",
+      }}>
+        <h1 style={{ textAlign: "center" }}>{user.length} Soldados</h1>
+      </div>
     </div>
   );
 
