@@ -34,6 +34,8 @@ export const useTmi = (channel: string) => {
                         return user;
                     });
             });
+        } else {
+            console.log("no hay team", channel);
         }
 
 
@@ -51,11 +53,7 @@ export const useTmi = (channel: string) => {
 
         const client = new tmi.Client({
             channels: channel.split(","),
-            logger: {
-                info: (msg: string) => { return },
-                warn: (msg: string) => console.warn(msg),
-                error: (msg: string) => console.error(msg),
-            }
+
         });
         client.connect();
         client.on("connected", () => {
