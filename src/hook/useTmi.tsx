@@ -9,6 +9,7 @@ export const useTmi = (channel: string) => {
 
     const [teams, setTeams] = useState<team[]>(JSON.parse(localStorage.getItem("teams") || "[]"));
     const [users, setUsers] = useState<user[]>(JSON.parse(localStorage.getItem("users") || "[]"));
+    const [connected, setConnected] = useState(false)
 
     const onMessageHandler = (channel: any, tags: any, message: string) => {
 
@@ -58,10 +59,14 @@ export const useTmi = (channel: string) => {
         client.connect();
         client.on("connected", () => {
             console.log("connected");
+            setConnected(true);
             client.on("message", onMessageHandler);
         });
         return () => {
-            client.disconnect().then(() => console.log("disconnected"));
+            client.disconnect().then(() => {
+                setConnected(false);
+                console.log("disconnected");
+            });
         }
     }, [teams, channel]);
 
@@ -91,5 +96,5 @@ export const useTmi = (channel: string) => {
 
     }
 
-    return { users, teams, createTeam, deleteTeam };
+    return { users, teams, createTeam, deleteTeam, connected };
 }

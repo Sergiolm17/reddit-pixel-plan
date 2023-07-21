@@ -8,7 +8,7 @@ function App() {
   const [temp, setTemp] = useState(localStorage.getItem("user") || "");
   const [user, setUser] = useState(localStorage.getItem("user") || "");
 
-  const { users, teams, createTeam, deleteTeam } = useTmi(user);
+  const { connected, users, teams, createTeam, deleteTeam } = useTmi(user);
 
   const [file, setFile] = useState<any>(null);
   const [newTeam, setNewTeam] = useState("")
@@ -66,6 +66,8 @@ function App() {
             localStorage.setItem("user", temp);
             window.alert("User set");
           }}>Set Twitch User</button>
+          <p>{connected ? "Connected" : "Not Connected"}</p>
+
         </div>
         <div>
           <input type="text"
