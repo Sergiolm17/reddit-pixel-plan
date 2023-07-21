@@ -50,7 +50,13 @@ export function Events({ team, scale, total, users }: { team: team, scale: numbe
                 justifyContent: "center",
                 width: `${width}px`,
                 height: `${width}px`,
-                backgroundColor: "red",
+                backgroundColor: "white",
+                color: "black",
+                opacity: 0.9,
+                borderRadius: "5%",
+                border: "1px solid black",
+                fontSize: "1rem",
+                fontWeight: "bold",
 
             }}>
                 <p>
