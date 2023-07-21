@@ -4,6 +4,7 @@ import { Events } from './components/Events';
 import { useTmi } from './hook/useTmi';
 import { Field } from './components/Text';
 import { ConnectionState } from './components/ConnectionState';
+import Twitter from './components/Twitter';
 
 
 function App() {
@@ -83,22 +84,7 @@ function App() {
           />
         </div>
       </div>
-      <div>
-        <p
-          style={{
-            position: "fixed",
-            bottom: "7px",
-            right: "7px",
-            color: "white",
-            fontSize: "1rem",
-            fontWeight: "bold",
-
-          }}
-        >
-          @srsergiolazaro
-
-        </p>
-      </div>
+      <Twitter />
     </div>
   );
 
