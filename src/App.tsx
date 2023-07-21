@@ -83,6 +83,22 @@ function App() {
           />
         </div>
       </div>
+      <div>
+        <p
+          style={{
+            position: "fixed",
+            bottom: "7px",
+            right: "7px",
+            color: "white",
+            fontSize: "1rem",
+            fontWeight: "bold",
+
+          }}
+        >
+          @srsergiolazaro
+
+        </p>
+      </div>
     </div>
   );
 
