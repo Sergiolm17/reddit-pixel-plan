@@ -2,6 +2,8 @@ import { useState } from 'react'
 import './App.css'
 import { Events } from './components/Events';
 import { useTmi } from './hook/useTmi';
+import { Field } from './components/Text';
+import { ConnectionState } from './components/ConnectionState';
 
 
 function App() {
@@ -19,24 +21,33 @@ function App() {
 
 
   return (
-    <div style={{
-      height: "100vh",
-      backgroundImage: `url(${file})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-
-    }}>
-      {teams.map((team, index) =>
-        <Events key={index} team={team} scale={scale} total={total} users={users} />
-      )}
-      <div style={
-        {
+    <div
+      style={{
+        height: "100vh",
+        backgroundImage: `url(${file})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {teams.map((team, index) => (
+        <Events
+          key={index}
+          team={team}
+          scale={scale}
+          total={total}
+          users={users}
+        />
+      ))}
+      <div
+        style={{
           position: "fixed",
           top: "7px",
-        }
-      }>
-        <input type="file" id="file"
+        }}
+      >
+        <input
+          type="file"
+          id="file"
           multiple={false}
           onChange={(e) => {
             //el archivo seleccionado es una imagen que quiero usarlo para que sea el fondo
@@ -44,73 +55,31 @@ function App() {
               const reader = new FileReader();
               reader.onload = (e) => {
                 setFile(e.target?.result);
-              }
+              };
               reader.readAsDataURL(e.target.files[0]);
             }
-
           }}
         />
-        <div>
-          <input type="text"
-            value={temp}
-            onChange={(e) => {
-              setTemp(e.target.value)
-            }
-            }
-          />
-          <button onClick={() => {
-            if (temp === "") return
-            //mayuscula
-            setUser(temp);
-            //salve to local storage
-            localStorage.setItem("user", temp);
-            window.alert("User set");
-          }}>Set Twitch User</button>
-          <p>{connected ? "Connected" : "Not Connected"}</p>
+        <Field type={"text"} state={temp} setState={setTemp} callback={(u) => localStorage.setItem("user", temp)} />
+        <ConnectionState isConnected={connected} />
 
-        </div>
-        <div>
-          <input type="text"
-            value={newTeam}
-            onChange={(e) => {
-              setNewTeam(e.target.value)
-            }
-            }
-          />
-          <button onClick={() => {
-            if (newTeam === "") return
-            //mayuscula
-            createTeam(newTeam);
-            setNewTeam("")
-          }}>Create Team</button>
-        </div>
+        <Field type={"text"} state={newTeam} setState={setNewTeam} callback={createTeam} />
+        <Field type={"text"} state={deleteName} setState={setDeleteTeam} callback={deleteTeam} />
 
-        <div>
-          <input type="text"
-            value={deleteName}
-            onChange={(e) => {
-              setDeleteTeam(e.target.value);
-            }
-            }
-          />
-          <button onClick={() => {
-            if (deleteName === "") return;
-            deleteTeam(deleteName);
-            setDeleteTeam("");
-          }}>Delete Team</button>
-        </div>
+
         <div>
           Scale{" "}
-          <input type="number"
+          <input
+            type="number"
             value={scale}
             min={0}
             max={100}
             onChange={(e) => {
-              setScale(parseInt(e.target.value))
-            }
-            }
+              setScale(parseInt(e.target.value));
+            }}
           />
-        </div>              </div>
+        </div>
+      </div>
     </div>
   );
 

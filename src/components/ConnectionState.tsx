@@ -1,4 +1,4 @@
 
-export function ConnectionState({ isConnected }: { isConnected: boolean}) {
-  return <p>State: { `${isConnected}` }</p>;
+export function ConnectionState({ isConnected }: { isConnected: boolean }) {
+  return <p>{isConnected ? "Connected" : "Not Connected"}</p>;
 }
