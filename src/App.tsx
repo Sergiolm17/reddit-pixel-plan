@@ -5,7 +5,7 @@ import { useTmi } from './hook/useTmi';
 import { Field } from './components/Text';
 import { ConnectionState } from './components/ConnectionState';
 import Twitter from './components/Twitter';
-
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [temp, setTemp] = useState(localStorage.getItem("user") || "");
@@ -31,6 +31,8 @@ function App() {
         backgroundRepeat: "no-repeat",
       }}
     >
+      <Analytics />
+
       {teams.map((team, index) => (
         <Events
           key={index}
